@@ -1,0 +1,73 @@
+
+    class Library {
+        -books: List<Book>
+        -members: List<Member>
+        -loans: List<Loan>
+        +addBook(book: Book)
+        +removeBook(book: Book)
+        +addMember(member: Member)
+        +removeMember(member: Member)
+        +borrowBook(book: Book, member: Member): Loan
+        +returnBook(loan: Loan)
+        +getLibrarySummary(): LibrarySummary
+    }
+
+    class Book {
+        -id: String
+        -title: String
+        -author: String
+        -publicationYear: int
+        -status: BookStatus
+        +clone(): Book
+    }
+
+    class Member {
+        -id: String
+        -name: String
+        -loans: List<Loan>
+        +addLoan(loan: Loan)
+        +removeLoan(loan: Loan)
+    }
+
+    class Loan {
+        -book: Book
+        -member: Member
+        -borrowDate: Date
+        -returnDate: Date
+        +isActive(): boolean
+        +isOverdue(): boolean
+    }
+
+    class LibrarySummary {
+        -availableBooks: int
+        -borrowedBooks: int
+        -activeMembers: int
+        -totalLoans: int
+    }
+
+    class BookFactory {
+        +createBook(type: String, id: String, title: String, author: String, year: int): Book
+    }
+
+    class LibraryManager {
+        -instance: LibraryManager
+        -library: Library
+        -bookFactory: BookFactory
+        +getInstance(): LibraryManager
+        +addBook(type: String, id: String, title: String, author: String, year: int)
+        +removeBook(bookId: String): boolean
+        +addMember(id: String, name: String)
+        +removeMember(memberId: String): boolean
+        +borrowBook(bookId: String, memberId: String): boolean
+        +returnBook(bookId: String): boolean
+        +getLibrarySummary(): LibrarySummary
+        +duplicateBook(bookId: String): String
+    }
+
+    Library "1" -- "*" Book
+    Library "1" -- "*" Member
+    Library "1" -- "*" Loan
+    Member "1" -- "*" Loan
+    Loan "1" -- "1" Book
+    LibraryManager "1" -- "1" Library
+    LibraryManager "1" -- "1" BookFactory
